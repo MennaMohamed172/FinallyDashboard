@@ -17,6 +17,8 @@ const articalRouter = require("./routers/articels")
 const tagRouter = require("./routers/tags")
 const PageRouter = require("./routers/page")
 const categoryRouter = require("./routers/category")
+const categoryArticleRputer=require("./routers/articalCategory")
+const tageArticleRouter=require('./routers/tagArtical')
 
 
 // var corsOptions = {
@@ -27,6 +29,8 @@ app.use(PageRouter)
 app.use(registerRouter)
 app.use(tagRouter)
 app.use(categoryRouter)
+app.use(categoryArticleRputer)
+app.use(tageArticleRouter)
 // app.use(cors(corsOptions));
 
 
