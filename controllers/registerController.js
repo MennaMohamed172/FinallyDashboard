@@ -13,21 +13,6 @@ const addNewUser= async function(req,res){
 }
 
 // Get user by id
-
-// const getUserById =async function(req,res){
-//     User.findById(req.params.userId, (err, user) => {
-//         if (err) {
-//           console.log(err);
-//           res.status(500).send(`Error fetching user: ${err}`);
-//         } else if (!user) {
-//           res.status(404).send(`User with id ${req.params.userId} not found`);
-//         } else {
-//           console.log(`Found user: ${user}`);
-//           res.status(200).json(user);
-//         }
-//       });
-// }
-
 const getUserById= async function(req,res){
   const _id = req.params.id
   User.findById(_id).then ((user) => {
@@ -84,22 +69,34 @@ const updateUserInfoById = async function(req,res){
 
 // delete user by id
 
-const deleteUserById =async function(req,res){
-    User.findByIdAndRemove(req.params.userId, (err, deletedUser) => {
-        if (err) {
-          console.log(err);
-          res.status(500).send(`Error deleting user: ${err}`);
-        } else if (!deletedUser) {
-          res.status(404).send(`User with id ${req.params.userId} not found`);
-        } else {
-          console.log(`Deleted user with id ${deletedUser._id}`);
-          // res.send("deleted successfully")
-          res.status(204).end();
-        }
-      });
-    }
+// const deleteUserById =async function(req,res){
+//     User.findByIdAndRemove(req.params.userId, (err, deletedUser) => {
+//         if (err) {
+//           console.log(err);
+//           res.status(500).send(`Error deleting user: ${err}`);
+//         } else if (!deletedUser) {
+//           res.status(404).send(`User with id ${req.params.userId} not found`);
+//         } else {
+//           console.log(`Deleted user with id ${deletedUser._id}`);
+//           // res.send("deleted successfully")
+//           res.status(204).end();
+//         }
+//       });
+//     }
     
-
+const deleteUserById = async function(req,res){
+  try {
+      const _id = req.params.id
+      const user = await User.findByIdAndDelete(_id)
+      if(!user) {
+         return res.status(404).send('UNABLE TO FIND USER')
+      }
+      res.status(200).send(user)
+ }
+ catch(e){
+     res.status(400).send(e)
+ }
+}
 module.exports={
     deleteUserById,
     addNewUser,
