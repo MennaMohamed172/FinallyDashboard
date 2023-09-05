@@ -1,0 +1,34 @@
+const mongoose = require("mongoose");
+const articalSchema = new mongoose.Schema({
+  Title: {
+    type: String,
+    maxlenght: 200,
+    trim: true,
+    required:true,
+  },
+  subtitle : {
+    type: String,
+    trim: true,
+    required:true,
+  },
+  
+  Phara: {
+    type: String,
+    required: true,
+    trim:true,
+  },
+  // id of category as foreign key(FK)
+  categoryArtical : {
+    type:mongoose.Schema.Types.ObjectId,
+    required:true,
+    ref:'Category'
+  },
+  isDraft:{
+    type: Boolean,
+    required:true
+  }
+});
+
+const Artical = mongoose.model("Artical", articalSchema);
+
+module.exports = Artical;
