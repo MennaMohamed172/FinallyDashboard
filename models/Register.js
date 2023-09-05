@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema({
       }
   },
     Password: {
+      unique:true,
       type: String,
       required: true,
       trim: true,
@@ -47,12 +48,19 @@ const userSchema = new mongoose.Schema({
       required:true,
       trim:true,
           },
+          Roles:{
+            type: String,
+            required:true,
+            default : "users",
+            enum:["users","Admin"]
+          },
     tokens : [
       {
           type: String,
           required : true
       }
   ],
+
   })
 
 //////////////////////////////////////////////////////////////////////////////////////

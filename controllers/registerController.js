@@ -14,18 +14,30 @@ const addNewUser= async function(req,res){
 
 // Get user by id
 
-const getUserById =async function(req,res){
-    User.findById(req.params.userId, (err, user) => {
-        if (err) {
-          console.log(err);
-          res.status(500).send(`Error fetching user: ${err}`);
-        } else if (!user) {
-          res.status(404).send(`User with id ${req.params.userId} not found`);
-        } else {
-          console.log(`Found user: ${user}`);
-          res.status(200).json(user);
-        }
-      });
+// const getUserById =async function(req,res){
+//     User.findById(req.params.userId, (err, user) => {
+//         if (err) {
+//           console.log(err);
+//           res.status(500).send(`Error fetching user: ${err}`);
+//         } else if (!user) {
+//           res.status(404).send(`User with id ${req.params.userId} not found`);
+//         } else {
+//           console.log(`Found user: ${user}`);
+//           res.status(200).json(user);
+//         }
+//       });
+// }
+
+const getUserById= async function(req,res){
+  const _id = req.params.id
+  User.findById(_id).then ((user) => {
+      if(!user){
+        return  res.status(404).send('UNABLE TO FIND')
+      }
+      res.status(200).send(user)
+    }).catch ((e) => {
+      res.status(500).send(e)
+    })
 }
 
 // Get all user

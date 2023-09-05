@@ -25,31 +25,65 @@ const getElmenetById= async function(req,res){
 
 const addNewِArtical = async function(req,res){
     console.log(req.body)
-    const artical = new Artical (req.body,{ isDraft: false })
+    const artical = new Artical (req.body,{ isDraft: false ,id: artical.length + 1, })
     artical.save()
     .then ((artical) => {res.status(200).json({ message: 'Article published successfully', artical})})
     .catch((e)=>{ res.status(400).send(e)})
 }
+//update artical by id
 
-//   creat articala as draft
+const updateArticalById =async function(req,res){
+
+  try {
+      const _id = req.params.id 
+      const artical = await Artical.findByIdAndUpdate (_id , req.body , {
+         new : true,
+         runValidators : true
+      })
+      if(!artical) {
+         return res.status(404).send('No User Founded')
+      }
+      res.status(200).send(artical)
+   }
+   catch(error) {
+      res.status(400).send(error)
+   }
+}
+
+// delete article by id
+
+const deletById = async function(req,res){
+  try {
+      const _id = req.params.id
+      const artical = await Artical.findByIdAndDelete(_id)
+      if(!artical) {
+         return res.status(404).send('UNABLE TO FIND USER')
+      }
+      res.status(200).send(artical)
+ }
+ catch(e){
+     res.status(400).send(e)
+ }
+}
+//   creat article as draft
 const draft =async (req, res) => {
     try {
         console.log(req.body)
-            const artical = new Artical (req.body,{isDraft: true , id: artical.length + 1,} )
-// const artical = new Artical({
-//                 Title,
-//                 subtitle,
-//                 Phara,
-//                 categoryArtical,
-//                 isDraft: true, 
-//               });
-//               artical.save();
+            // const artical = new Artical (req.body,{isDraft: true , id: artical.length + 1,} )
+const artical = new Artical({
+                Title,
+                subtitle,
+                Phara,
+                categoryArtical,
+                isDraft: true,
+              });
+              artical.save();
               res.status(201).json({ message: 'The article has been successfully saved as a draft.', artical });
 
     }
     catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'An error occurred while saving the article' });
+        res.status(500).json(error);
       }
 }
 // edit-draft arical by id
@@ -72,8 +106,6 @@ const updateDraftArticalById =async function(req,res){
      }
 }
 
-
-
 // make a post as preview
 const preview = async function(req,res){
     const articleId = req.params.id;
@@ -83,41 +115,8 @@ const preview = async function(req,res){
     }
     res.json({ message: 'Article preview', artical });
 }
-//update artical by id
 
-const updateArticalById =async function(req,res){
 
-    try {
-        const _id = req.params.id 
-        const artical = await Artical.findByIdAndUpdate (_id , req.body , {
-           new : true,
-           runValidators : true
-        })
-        if(!artical) {
-           return res.status(404).send('No User Founded')
-        }
-        res.status(200).send(artical)
-     }
-     catch(error) {
-        res.status(400).send(error)
-     }
-}
-
-// delete article by id
-
-const deletById = async function(req,res){
-    try {
-        const _id = req.params.id
-        const artical = await Artical.findByIdAndDelete(_id)
-        if(!artical) {
-           return res.status(404).send('UNABLE TO FIND USER')
-        }
-        res.status(200).send(artical)
-   }
-   catch(e){
-       res.status(400).send(e)
-   }
-}
 // to move article to trash  
 const moveArticalToTrash = async function(req,res){
 
