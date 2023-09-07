@@ -24,16 +24,16 @@ const getElmenetById= async function(req,res){
 // add new artical
 
 const addNewِArtical = async function(req,res){
-    console.log(req.body)
-    const artical = new Artical (req.body,{ isDraft: false ,id: artical.length + 1, })
+    // console.log(req.body)
+    const artical = new Artical (req.body,{ isDraft: false })
     artical.save()
-    .then ((artical) => {res.status(200).json({ message: 'Article published successfully', artical})})
+    .then ((articals) => {res.status(200).json({ message: 'Article published successfully', articals})})
     .catch((e)=>{ res.status(400).send(e)})
 }
+
 //update artical by id
 
 const updateArticalById =async function(req,res){
-
   try {
       const _id = req.params.id 
       const artical = await Artical.findByIdAndUpdate (_id , req.body , {
@@ -51,7 +51,6 @@ const updateArticalById =async function(req,res){
 }
 
 // delete article by id
-
 const deletById = async function(req,res){
   try {
       const _id = req.params.id
@@ -67,25 +66,13 @@ const deletById = async function(req,res){
 }
 //   creat article as draft
 const draft =async (req, res) => {
-    try {
-        console.log(req.body)
-            // const artical = new Artical (req.body,{isDraft: true , id: artical.length + 1,} )
-const artical = new Artical({
-                Title,
-                subtitle,
-                Phara,
-                categoryArtical,
-                isDraft: true,
-              });
-              artical.save();
-              res.status(201).json({ message: 'The article has been successfully saved as a draft.', artical });
-
-    }
-    catch (error) {
-        console.error(error);
-        res.status(500).json(error);
-      }
+// console.log(req.body)
+  const artical = new Artical (req.body,{ isDraft: false })
+  artical.save()
+  .then ((articals) => {res.status(200).json({ message: 'Article Saved as Draft', articals})})
+  .catch((e)=>{ res.status(400).send(e)})
 }
+
 // edit-draft arical by id
 
 const updateDraftArticalById =async function(req,res){
