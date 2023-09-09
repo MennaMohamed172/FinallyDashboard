@@ -69,7 +69,7 @@ const deletById = async function(req,res){
 //   creat article as draft
 const draft =async (req, res) => {
 // console.log(req.body)
-  const artical = new Artical (req.body,{ isDraft: false })
+  const artical = new Artical (req.body,{ isDraft: true })
   artical.save()
   .then ((articals) => {res.status(200).json({ message: 'Article Saved as Draft', articals})})
   .catch((e)=>{ res.status(400).send(e)})
