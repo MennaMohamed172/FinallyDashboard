@@ -25,8 +25,13 @@ const articalSchema = new mongoose.Schema({
   },
   isDraft:{
     type: Boolean,
-    required:true
-  }
+  },
+  deletedAt:{
+    type:Date
+  },
+  isTrashed:{
+    type:Boolean
+  } ,
 });
 
 const Artical = mongoose.model("Artical", articalSchema);

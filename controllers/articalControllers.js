@@ -1,4 +1,6 @@
 const Artical = require('../models/artical')
+const schedule = require('node-schedule');
+
 // Get All Elemnts of artical
 const getAllElement=async function(req,res){
     Artical.find({}).then ((articale) =>{
@@ -102,34 +104,39 @@ const preview = async function(req,res){
     }
     res.json({ message: 'Article preview', artical });
 }
+const moveArticalToTrash= async (req, res) => {
+  try {
+    const { articalId } = req.params;
+    // Find the article by ID
+    const artical= await Artical.findById(articalId);
 
-
-// to move article to trash  
-const moveArticalToTrash = async function(req,res){
-
-  const articleId = parseInt(req.params.id, 10);
-  const articleIndex = Artical.findIndex(article => article.id === articleId);
-
-  if (articleIndex === -1) {
-    return res.status(404).json({ message: 'Article not found.' });
-  }
-
-  const deletedArticle = Artical.splice(articleIndex, 1)[0];
-  trash.push(deletedArticle);
-  res.status(200).json({ message: 'Article moved to trash.', artical: deletedArticle });
-}
-// Function used to delete article from trash after 30 days
-function deleteOldTrashArticles() {
-    const currentDate = new Date();
-    const thirtyDaysAgo = new Date(currentDate.getTime() - 30 * 24 * 60 * 60 * 1000); // 30 يومًا بالميلي ثانية
-  
-    for (let i = trash.length - 1; i >= 0; i--) {
-      if (trash[i].deletedAt < thirtyDaysAgo) {
-        trash.splice(i, 1);
-      }
+    if (!artical) {
+      return res.status(404).send('Article not found');
     }
+
+    // Move the article to the trash
+    artical.isTrashed = true;
+    artical.deletedAt = new Date();
+    // artical.isDraft= true;
+    await artical.save();
+    // Schedule deletion after 30 days
+    const deletionDate = new Date();
+    deletionDate.setDate(deletionDate.getDate() + 30); // Add 30 days
+    schedule.scheduleJob(deletionDate, async () => {
+      try {
+        await Artical.findByIdAndDelete(articalId);
+        console.log(`Article deleted from trash after 30 days: ${articalId}`);
+      } catch (error) {
+        console.error('Error deleting article from trash:', error);
+      }
+    });
+
+    res.status(200).json({ message: 'Article moved to trash successfully' });
+  } catch (error) {
+    console.error('Error moving article to trash:', error);
+    res.status(500).send(error);
   }
-  
+};
 module.exports = {
     getAllElement,
     draft,
@@ -139,16 +146,5 @@ module.exports = {
     deletById,
     preview,
     updateDraftArticalById,
-    moveArticalToTrash,
-    deleteOldTrashArticles
-
+    moveArticalToTrash
 }
-
-// save artical as draft
-// const draft = async function(req,res){
-//     console.log(req.body)
-//     const artical = new Artical (req.body)
-//     artical.save()
-//     .then ((artical) => {res.status(200).json({ message: 'Article saved as draft', artical})})
-//     .catch((e)=>{ res.status(400).send(e)})
-// }

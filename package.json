@@ -23,6 +23,7 @@
     "mongoose": "^6.12.0",
     "multer-gridfs-storage": "^5.0.2",
     "node-cron": "^3.0.2",
+    "node-schedule": "^2.1.1",
     "path": "^0.12.7",
     "validator": "^13.9.0"
   },

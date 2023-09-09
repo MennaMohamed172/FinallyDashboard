@@ -1,7 +1,7 @@
 const express = require('express')
-const TagArticalController = require('../controllers/tagArticalController')
-
+const tagArticalController = require('../controllers/tagArticalController')
 const router = express.Router()
-router.get('/artical/Tag',TagArticalController.getTagForArtical)
+// router.get('/category/artical',ArticalCategoryController.getArticalForCategory)
+router.get('/AllTag', tagArticalController.getAllTags)
 
 module.exports = router
