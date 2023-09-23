@@ -22,9 +22,12 @@ const categoryArticleRputer=require("./routers/articalCategory")
 const tageArticleRouter=require('./routers/tagArtical')
 
 
-// var corsOptions = {
-//   origin: "http://127.0.0.1:5000"
-// };
+
+var corsOptions = {
+  origin: 'mongodb+srv://islam:E47OCZupGncpDPU3@cluster0.1dbk9td.mongodb.net/test?retryWrites=true&w=majority:5000',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+
 app.use(articalRouter)
 app.use(PageRouter)
 app.use(registerRouter)
@@ -32,7 +35,7 @@ app.use(tagRouter)
 app.use(categoryRouter)
 app.use(categoryArticleRputer)
 app.use(tageArticleRouter)
-// app.use(cors(corsOptions));
+app.use(cors(corsOptions));
 
 
 app.use(express.urlencoded({ extended: true }));
@@ -46,4 +49,3 @@ app.listen(port, () => {
 })
 
  
-
