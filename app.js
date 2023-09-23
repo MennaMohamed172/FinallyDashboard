@@ -22,6 +22,9 @@ const categoryArticleRputer=require("./routers/articalCategory")
 const tageArticleRouter=require('./routers/tagArtical')
 
 
+// var corsOptions = {
+//   origin: "http://127.0.0.1:5000"
+// };
 app.use(articalRouter)
 app.use(PageRouter)
 app.use(registerRouter)
@@ -29,7 +32,7 @@ app.use(tagRouter)
 app.use(categoryRouter)
 app.use(categoryArticleRputer)
 app.use(tageArticleRouter)
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 
 app.use(express.urlencoded({ extended: true }));
@@ -41,5 +44,9 @@ app.listen(port, () => {
   console.log("Server is up and running on port " + port)
   console.log("All Done Successfully")
 })
+
+ 
+
+
 
  
